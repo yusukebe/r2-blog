@@ -12,6 +12,13 @@ type Options = {
 const nullScript = 'export default { fetch: () => new Response(null, { status: 404 }) };'
 
 export function local2r2(options: Options): Plugin {
+  const mf = new Miniflare({
+    modules: true,
+    script: nullScript,
+    r2Buckets: options.r2Buckets,
+    r2Persist: options.r2Persist ?? true
+  })
+
   let server: ViteDevServer
 
   const targetDir = resolve(options.dir)
@@ -22,13 +29,6 @@ export function local2r2(options: Options): Plugin {
       server = s
     },
     async watchChange(id) {
-      const mf = new Miniflare({
-        modules: true,
-        script: nullScript,
-        r2Buckets: options.r2Buckets,
-        r2Persist: options.r2Persist ?? true
-      })
-
       if (id.startsWith(targetDir)) {
         const fileName = relative(targetDir, id)
         const bucket = await mf.getR2Bucket('BUCKET')
