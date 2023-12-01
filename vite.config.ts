@@ -10,7 +10,7 @@ export default defineConfig({
   },
   plugins: [
     pages({
-      minify: false
+      minify: true
     }),
     local2r2({
       r2Buckets: ['BUCKET'],
