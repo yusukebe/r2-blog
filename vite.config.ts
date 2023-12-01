@@ -21,6 +21,7 @@ export default defineConfig(({ command }) => {
     plugins: [
       local2r2({
         r2Buckets: ['BUCKET'],
+        bindingName: 'BUCKET',
         dir: './contents'
       }),
       devServer({

@@ -7,6 +7,7 @@ type Options = {
   dir: string
   r2Buckets: string[] | Record<string, string>
   r2Persist?: boolean
+  bindingName?: string
 }
 
 const nullScript = 'export default { fetch: () => new Response(null, { status: 404 }) };'
@@ -34,7 +35,7 @@ export function local2r2(options: Options): Plugin {
     async watchChange(id) {
       if (id.startsWith(targetDir)) {
         const fileName = relative(targetDir, id)
-        const bucket = await mf.getR2Bucket('BUCKET')
+        const bucket = await mf.getR2Bucket(options.bindingName ?? 'BUCKET')
         try {
           await fs.access(id)
           console.info(`${fileName} is updated`)
