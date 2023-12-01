@@ -39,6 +39,7 @@ app.get('/files/:id', async (c) => {
       title: info.head.split(':')[1]
     })
   } else {
+    c.status(404)
     return c.render('not found')
   }
 })
