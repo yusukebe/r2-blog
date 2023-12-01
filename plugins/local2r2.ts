@@ -27,6 +27,9 @@ export function local2r2(options: Options): Plugin {
     name: 'local2r2',
     configureServer(s) {
       server = s
+      server.httpServer!.on('close', () => {
+        mf.dispose()
+      })
     },
     async watchChange(id) {
       if (id.startsWith(targetDir)) {
