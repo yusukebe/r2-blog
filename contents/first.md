@@ -4,4 +4,4 @@ title: First Post
 
 ## First Post
 
-Hello, this is my first post.
+Hello, this is my first post!

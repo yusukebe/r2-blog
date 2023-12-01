@@ -1,4 +1,5 @@
 import { Hono } from 'hono'
+import { etag } from 'hono/etag'
 import { renderer } from './renderer'
 import { micromark } from 'micromark'
 import frontMatter from './front-matter'
@@ -10,16 +11,17 @@ type Env = {
 }
 
 const app = new Hono<Env>()
+app.get('*', etag({ weak: true }))
 app.get('*', renderer)
 
 app.get('/', async (c) => {
   const listed = await c.env.BUCKET.list()
   return c.render(
     <ul>
-      {listed.objects.map((file) => {
+      {listed.objects.reverse().map((file) => {
         return (
           <li>
-            <a href={`/files/${file.key}`}>{file.key}</a>
+            <a href={`/files/${file.key}`}>{file.key}</a> - {file.uploaded.toDateString()}
           </li>
         )
       })}
